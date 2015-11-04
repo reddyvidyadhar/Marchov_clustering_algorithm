@@ -13,7 +13,9 @@ public class MarchovClusteringAlgorithm {
 //		System.out.println(arrayDim + " " + arrayDim);
 		for (int i = 0; i < arrayDim; i++) {
 			for (int j = 0; j < arrayDim; j++) {
-				if (adjMatrix[i][j] > 0 && adjMatrix[i][j] < 1)
+				if (adjMatrix[i][j] > 0 
+//						&& adjMatrix[i][j] < 1
+						)
 					System.out.print(adjMatrix[i][j] + " ");
 			}
 //			System.out.println();
@@ -102,7 +104,8 @@ public class MarchovClusteringAlgorithm {
 		// The name of the file to open.
 		float startTime = System.currentTimeMillis();
 		File fileName = new File(
-				"/home/jagvir/Desktop/Datamining/Data_For_HW3/attweb_net.txt");
+				"/home/jagvir/Desktop/Datamining/Data_For_HW3/yeast_undirected_metabolic.txt");
+		
 		MarchovClusteringAlgorithm obj = new MarchovClusteringAlgorithm();
 		obj.adjacencyMatrixCreator(fileName);
 		float stopTime = System.currentTimeMillis();
