@@ -1,11 +1,14 @@
 import java.util.*;
 import java.io.*;
 
+import Jama.Matrix;
+
 public class MarchovClusteringAlgorithm {
 
 	/**
 	 * @param args
 	 */
+	private int power = 1;
 
 	private void printmatrix(float[][] adjMatrix) {
 		int arrayDim = adjMatrix.length;
@@ -69,8 +72,21 @@ public class MarchovClusteringAlgorithm {
 
 	}
 
-	private void matrixSquaring(float[][] adjMatrix) {
+	private Matrix matrixMultiplicator(double[][] adjMatrix, int power) {
+		Matrix  baseMatrix = new Matrix(adjMatrix);
+		Matrix result= null;
+		int k= 1;
+		while(k<power){
+			Matrix adj = new Matrix(adjMatrix);
+			result = baseMatrix.times(adj);
+			baseMatrix = result;
+			k++;
+		}
 		
+		return baseMatrix;
+	}
+
+	private void matrixInflator() {
 	}
 
 	public void adjacencyMatrixCreator(File fileName) {
@@ -107,7 +123,6 @@ public class MarchovClusteringAlgorithm {
 		// printmatrix(adjMatrix);
 		adjMatrix = matrixNormalizer(adjMatrix);
 		printmatrix(adjMatrix);
-		
 
 	}
 
