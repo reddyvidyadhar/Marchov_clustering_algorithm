@@ -14,7 +14,7 @@ public class MarchovClusteringAlgorithm {
 				// if (adjMatrix[i][j] > 0
 				// // && adjMatrix[i][j] < 1
 				// )
-				System.out.print(adjMatrix[i][j] + " ");
+				System.out.print(adjMatrix[i][j] + "\t");
 			}
 			System.out.println();
 		}
@@ -48,9 +48,9 @@ public class MarchovClusteringAlgorithm {
 		return maxElement;
 	}
 
-	private void matrixNormalizer(float[][] adjMatrix) {
+	private float[][] matrixNormalizer(float[][] adjMatrix) {
 		int arrayDim = adjMatrix.length;
-		System.out.println(arrayDim);
+		// System.out.println(arrayDim);
 		for (int i = 0; i < arrayDim; i++) {
 			float sum = 0;
 			for (int j = 0; j < arrayDim; j++) {
@@ -62,11 +62,15 @@ public class MarchovClusteringAlgorithm {
 				if (sum > 0)
 					adjMatrix[j][i] = adjMatrix[j][i] / sum;
 			}
-			System.out.println();
 
 		}
-		 printmatrix(adjMatrix);
+		// printmatrix(adjMatrix);
+		return adjMatrix;
 
+	}
+
+	private void matrixSquaring(float[][] adjMatrix) {
+		
 	}
 
 	public void adjacencyMatrixCreator(File fileName) {
@@ -101,8 +105,10 @@ public class MarchovClusteringAlgorithm {
 			System.out.println("Error reading file '" + fileName + "'");
 		}
 		// printmatrix(adjMatrix);
-		matrixNormalizer(adjMatrix);
-		// printmatrix(adjMatrix);
+		adjMatrix = matrixNormalizer(adjMatrix);
+		printmatrix(adjMatrix);
+		
+
 	}
 
 	public static void main(String[] args) {
