@@ -10,7 +10,7 @@ public class MarchovClusteringAlgorithm {
 	 */
 	private int power = 1;
 
-	private void printmatrix(float[][] adjMatrix) {
+	private void printmatrix(double[][] adjMatrix) {
 		int arrayDim = adjMatrix.length;
 		for (int i = 0; i < arrayDim; i++) {
 			for (int j = 0; j < arrayDim; j++) {
@@ -51,11 +51,11 @@ public class MarchovClusteringAlgorithm {
 		return maxElement;
 	}
 
-	private float[][] matrixNormalizer(float[][] adjMatrix) {
+	private double[][] matrixNormalizer(double[][] adjMatrix) {
 		int arrayDim = adjMatrix.length;
 		// System.out.println(arrayDim);
 		for (int i = 0; i < arrayDim; i++) {
-			float sum = 0;
+			double sum = 0;
 			for (int j = 0; j < arrayDim; j++) {
 				sum = sum + adjMatrix[j][i];
 				// System.out.println("j , i "+j+" "+i);
@@ -67,7 +67,7 @@ public class MarchovClusteringAlgorithm {
 			}
 
 		}
-		// printmatrix(adjMatrix);
+		 printmatrix(adjMatrix);
 		return adjMatrix;
 
 	}
@@ -96,7 +96,7 @@ public class MarchovClusteringAlgorithm {
 		// System.out.println(arrayDim);
 		System.out.println("Max element is :- " + arrayDim);
 		String line = null;
-		float[][] adjMatrix = new float[arrayDim][arrayDim];
+		double[][] adjMatrix = new double[arrayDim][arrayDim];
 		for (int i = 0; i < arrayDim; i++) {
 			for (int j = 0; j < arrayDim; j++) {
 				adjMatrix[i][j] = 0;
@@ -122,7 +122,7 @@ public class MarchovClusteringAlgorithm {
 		}
 		// printmatrix(adjMatrix);
 		adjMatrix = matrixNormalizer(adjMatrix);
-		printmatrix(adjMatrix);
+//		printmatrix(adjMatrix);
 
 	}
 
