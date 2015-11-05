@@ -9,22 +9,21 @@ public class MarchovClusteringAlgorithm {
 
 	private void printmatrix(float[][] adjMatrix) {
 		int arrayDim = adjMatrix.length;
-
-		// System.out.println(arrayDim + " " + arrayDim);
 		for (int i = 0; i < arrayDim; i++) {
 			for (int j = 0; j < arrayDim; j++) {
-				if (adjMatrix[i][j] > 0
-				// && adjMatrix[i][j] < 1
-				)
-					System.out.println(adjMatrix[i][j] + " ");
+				// if (adjMatrix[i][j] > 0
+				// // && adjMatrix[i][j] < 1
+				// )
+				System.out.print(adjMatrix[i][j] + " ");
 			}
-			// System.out.println();
+			System.out.println();
 		}
 	}
 
 	private int maxSizeFinder(File fileName) {
 		int maxElement = 0;
 		try {
+
 			BufferedReader bufferedReader = new BufferedReader(new FileReader(
 					fileName));
 
@@ -45,31 +44,37 @@ public class MarchovClusteringAlgorithm {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		return maxElement;
 	}
 
 	private void matrixNormalizer(float[][] adjMatrix) {
-
 		int arrayDim = adjMatrix.length;
+		System.out.println(arrayDim);
 		for (int i = 0; i < arrayDim; i++) {
 			float sum = 0;
 			for (int j = 0; j < arrayDim; j++) {
 				sum = sum + adjMatrix[j][i];
+				// System.out.println("j , i "+j+" "+i);
 			}
+			// System.out.println("sum = "+sum);
 			for (int j = 0; j < arrayDim; j++) {
-				if (adjMatrix[i][0] > 0)
+				if (sum > 0)
 					adjMatrix[j][i] = adjMatrix[j][i] / sum;
 			}
+			System.out.println();
 
 		}
-		printmatrix(adjMatrix);
+		 printmatrix(adjMatrix);
 
 	}
 
 	public void adjacencyMatrixCreator(File fileName) {
 		int arrayDim = maxSizeFinder(fileName) + 1;// here arrayDim is
-													// incremented because the
-		System.out.println(arrayDim);
+
+		// incremented because the
+		// System.out.println(arrayDim);
+		System.out.println("Max element is :- " + arrayDim);
 		String line = null;
 		float[][] adjMatrix = new float[arrayDim][arrayDim];
 		for (int i = 0; i < arrayDim; i++) {
@@ -95,24 +100,22 @@ public class MarchovClusteringAlgorithm {
 		} catch (IOException ex) {
 			System.out.println("Error reading file '" + fileName + "'");
 		}
-//		printmatrix(adjMatrix);
-		 matrixNormalizer(adjMatrix);
+		// printmatrix(adjMatrix);
+		matrixNormalizer(adjMatrix);
 		// printmatrix(adjMatrix);
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		// The name of the file to open.
-		float x = 1;
-		float y = x / 2;
-		System.out.println(y);
 		float startTime = System.currentTimeMillis();
 		// File fileName = new File(
 		// "/home/jagvir/Desktop/Datamining/Data_For_HW3/yeast_undirected_metabolic.txt");
-//		File fileName = new File(
-//				"/home/jagvir/Desktop/Datamining/Data_For_HW3/attweb_net.txt");
+		// File fileName = new File(
+		// "/home/jagvir/Desktop/Datamining/Data_For_HW3/attweb_net.txt");
 		File fileName = new File(
 				"/home/jagvir/Desktop/Datamining/Data_For_HW3/temp.txt");
+
 		MarchovClusteringAlgorithm obj = new MarchovClusteringAlgorithm();
 		obj.adjacencyMatrixCreator(fileName);
 		float stopTime = System.currentTimeMillis();
