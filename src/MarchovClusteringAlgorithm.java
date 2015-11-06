@@ -8,18 +8,19 @@ public class MarchovClusteringAlgorithm {
 	 * @param args
 	 */
 	private int power = 1;
-public void printer(Matrix adjMatr){
-	printmatrix(adjMatr);
-}
+
+	public void printer(Matrix adjMatr) {
+		printmatrix(adjMatr);
+	}
+
 	public void printmatrix(Matrix adjMatr) {
 		int counter = 0;
 		int arrayDim = adjMatr.getColumnDimension();
 		for (int i = 0; i < arrayDim; i++) {
 			for (int j = 0; j < arrayDim; j++) {
-				 if (adjMatr.get(i, j) != 0
-				 // // && adjMatrix[i][j] < 1
-				 )
-				{
+				if (adjMatr.get(i, j) != 0
+				// // && adjMatrix[i][j] < 1
+				) {
 					counter++;
 					System.out.print(adjMatr.get(i, j) + "\t");
 				}
@@ -208,7 +209,7 @@ public void printer(Matrix adjMatr){
 
 		System.out.println("convergence finder:- ");
 		adjMatr = converganceFinder(adjMatr, power, inflationParameter, 0);
-		printmatrix(adjMatr);
+		// printmatrix(adjMatr);
 		System.out.println(clusterCounter(adjMatr));
 		return adjMatr;
 
@@ -226,13 +227,13 @@ public void printer(Matrix adjMatr){
 		// // printmatrix(adjMatr);
 		adjMatr = matrixNormalizer(adjMatr);
 		// // System.out.println("after normalization");
-		 if (!isMatrixEqual(initialMatrix, adjMatr)) {
-		 counter++;
-		 adjMatr = converganceFinder(adjMatr, power, inflationParameter,
-		 counter);
-		 }
+		if (!isMatrixEqual(initialMatrix, adjMatr)) {
+			counter++;
+			adjMatr = converganceFinder(adjMatr, power, inflationParameter,
+					counter);
+		}
 		System.out.println(counter);
-//		printmatrix(adjMatr);
+		// printmatrix(adjMatr);
 		return adjMatr;
 
 	}
@@ -243,8 +244,8 @@ public void printer(Matrix adjMatr){
 		// "/home/jagvir/Desktop/Datamining/Data_For_HW3/yeast_undirected_metabolic.txt");
 		File fileName = new File(
 				"/home/jagvir/DataMining_Marchov_clustering_algorithm/dataFiles/new_att.txt");
-//		File fileName = new File(
-//				"/home/jagvir/DataMining_Marchov_clustering_algorithm/dataFiles/new_collaboration.txt");
+		// File fileName = new File(
+		// "/home/jagvir/DataMining_Marchov_clustering_algorithm/dataFiles/new_collaboration.txt");
 		// File fileName = new File(
 		// "/home/jagvir/Desktop/Datamining/Data_For_HW3/temp.txt");
 		// Scanner input = new Scanner(System.in);
