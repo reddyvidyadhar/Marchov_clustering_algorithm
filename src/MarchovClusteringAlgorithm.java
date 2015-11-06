@@ -22,11 +22,12 @@ public class MarchovClusteringAlgorithm {
 					counter++;
 					System.out.print(adjMatr.get(i, j) + "\t");
 				}
-
 			}
 			System.out.println();
 		}
-		// System.out.println(counter);
+
+		System.out.println();
+		// System.out.println("counter:- " + counter);
 	}
 
 	private int clusterCounter(Matrix adjMatr) {
@@ -95,13 +96,12 @@ public class MarchovClusteringAlgorithm {
 			}
 
 		}
-
+		// printmatrix(adjMatr);
 		return adjMatr;
 
 	}
 
 	private Matrix matrixMultiplicator(Matrix adjMatr, int power) {
-		// System.out.println("here");
 		Matrix baseMatrix = adjMatr;
 		Matrix result = null;
 		int k = 1;
@@ -116,6 +116,7 @@ public class MarchovClusteringAlgorithm {
 	}
 
 	private Matrix matrixInflator(Matrix adjMatr, int inflationParameter) {
+
 		int arrayDim = adjMatr.getColumnDimension();
 		// System.out.println(arrayDim);
 		for (int i = 0; i < arrayDim; i++) {
@@ -144,8 +145,6 @@ public class MarchovClusteringAlgorithm {
 															// is performed as
 															// well
 		int arrayDim = maxSizeFinder(fileName) + 1;
-
-		System.out.println("Max element is :- " + arrayDim);
 		String line = null;
 		double[][] adjMatrix = new double[arrayDim][arrayDim];
 		for (int i = 0; i < arrayDim; i++) {
@@ -165,7 +164,6 @@ public class MarchovClusteringAlgorithm {
 						.parseInt(strArry[1])] = 1;
 				adjMatrix[Integer.parseInt(strArry[1])][Integer
 						.parseInt(strArry[0])] = 1;
-				// System.out.println(adjMatrix[Integer.parseInt(strArry[0])][Integer.parseInt(strArry[1])]);
 			}
 
 			bufferedReader.close();
@@ -204,30 +202,36 @@ public class MarchovClusteringAlgorithm {
 	public void driverMethod(File fileName, int power, int inflationParameter) {
 
 		Matrix adjMatr = adjacencyMatrixCreator(fileName);
-		// printmatrix(adjMatr);
+		System.out.println("initial");
+		 printmatrix(adjMatr);
 		adjMatr = matrixNormalizer(adjMatr);
-		// System.out.println("convergence finder:- ");
-		// adjMatr = converganceFinder(adjMatr, power, inflationParameter);
-		// printmatrix(adjMatr);
-		// System.out.println(clusterCounter(adjMatr));
+
+		System.out.println("convergence finder:- ");
+		adjMatr = converganceFinder(adjMatr, power, inflationParameter, 0);
+		printmatrix(adjMatr);
+		System.out.println(clusterCounter(adjMatr));
 
 	}
 
 	private Matrix converganceFinder(Matrix initialMatrix, int power,
-			int inflationParameter) {
-		System.out.println("herrreeeeeeeeee");
-		Matrix adjMatr = matrixMultiplicator(initialMatrix, power);
-		// System.out.println("after multiplication ");
-		// printmatrix(adjMatr);
-		adjMatr = matrixInflator(adjMatr, inflationParameter);
-		// System.out.println("after inflation");
-		// printmatrix(adjMatr);
-		adjMatr = matrixNormalizer(adjMatr);
-		// System.out.println("after normalization");
-		if (!isMatrixEqual(initialMatrix, adjMatr)) {
+			int inflationParameter, int counter) {
 
-			converganceFinder(adjMatr, power, inflationParameter);
-		}
+		Matrix adjMatr = matrixMultiplicator(initialMatrix, power);
+
+		// // System.out.println("after multiplication ");
+		// // printmatrix(adjMatr);
+		adjMatr = matrixInflator(adjMatr, inflationParameter);
+		// // System.out.println("after inflation");
+		// // printmatrix(adjMatr);
+		adjMatr = matrixNormalizer(adjMatr);
+		// // System.out.println("after normalization");
+//		if (!isMatrixEqual(initialMatrix, adjMatr)) {
+//			counter++;
+//			adjMatr = converganceFinder(adjMatr, power, inflationParameter,
+//					counter);
+//		}
+		System.out.println(counter);
+		printmatrix(adjMatr);
 		return adjMatr;
 
 	}
