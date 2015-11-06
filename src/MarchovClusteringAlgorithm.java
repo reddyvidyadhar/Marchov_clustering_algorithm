@@ -1,6 +1,5 @@
 import java.util.*;
 import java.io.*;
-
 import Jama.Matrix;
 
 public class MarchovClusteringAlgorithm {
@@ -41,7 +40,6 @@ public class MarchovClusteringAlgorithm {
 				}
 
 			}
-
 		}
 		System.out.println("cluster is :- " + clusterCounter);
 		return clusterCounter;
@@ -203,7 +201,7 @@ public class MarchovClusteringAlgorithm {
 
 		Matrix adjMatr = adjacencyMatrixCreator(fileName);
 		System.out.println("initial");
-		 printmatrix(adjMatr);
+		printmatrix(adjMatr);
 		adjMatr = matrixNormalizer(adjMatr);
 
 		System.out.println("convergence finder:- ");
@@ -225,11 +223,11 @@ public class MarchovClusteringAlgorithm {
 		// // printmatrix(adjMatr);
 		adjMatr = matrixNormalizer(adjMatr);
 		// // System.out.println("after normalization");
-//		if (!isMatrixEqual(initialMatrix, adjMatr)) {
-//			counter++;
-//			adjMatr = converganceFinder(adjMatr, power, inflationParameter,
-//					counter);
-//		}
+		 if (!isMatrixEqual(initialMatrix, adjMatr)) {
+		 counter++;
+		 adjMatr = converganceFinder(adjMatr, power, inflationParameter,
+		 counter);
+		 }
 		System.out.println(counter);
 		printmatrix(adjMatr);
 		return adjMatr;
@@ -240,10 +238,10 @@ public class MarchovClusteringAlgorithm {
 		float startTime = System.currentTimeMillis();
 		// File fileName = new File(
 		// "/home/jagvir/Desktop/Datamining/Data_For_HW3/yeast_undirected_metabolic.txt");
-		// File fileName = new File(
-		// "/home/jagvir/DataMining_Marchov_clustering_algorithm/dataFiles/new_att.txt");
 		File fileName = new File(
-				"/home/jagvir/Desktop/Datamining/Data_For_HW3/temp.txt");
+				"/home/jagvir/DataMining_Marchov_clustering_algorithm/dataFiles/new_att.txt");
+		// File fileName = new File(
+		// "/home/jagvir/Desktop/Datamining/Data_For_HW3/temp.txt");
 		// Scanner input = new Scanner(System.in);
 		// System.out.println("enter power");
 		// int power = input.nextInt();
