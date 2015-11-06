@@ -8,15 +8,17 @@ public class MarchovClusteringAlgorithm {
 	 * @param args
 	 */
 	private int power = 1;
-
-	private void printmatrix(Matrix adjMatr) {
+public void printer(Matrix adjMatr){
+	printmatrix(adjMatr);
+}
+	public void printmatrix(Matrix adjMatr) {
 		int counter = 0;
 		int arrayDim = adjMatr.getColumnDimension();
 		for (int i = 0; i < arrayDim; i++) {
 			for (int j = 0; j < arrayDim; j++) {
-				// if (adjMatr.get(i, j) != 0
-				// // // && adjMatrix[i][j] < 1
-				// )
+				 if (adjMatr.get(i, j) != 0
+				 // // && adjMatrix[i][j] < 1
+				 )
 				{
 					counter++;
 					System.out.print(adjMatr.get(i, j) + "\t");
@@ -197,7 +199,7 @@ public class MarchovClusteringAlgorithm {
 		return true;
 	}
 
-	public void driverMethod(File fileName, int power, int inflationParameter) {
+	public Matrix driverMethod(File fileName, int power, int inflationParameter) {
 
 		Matrix adjMatr = adjacencyMatrixCreator(fileName);
 		System.out.println("initial");
@@ -208,6 +210,7 @@ public class MarchovClusteringAlgorithm {
 		adjMatr = converganceFinder(adjMatr, power, inflationParameter, 0);
 		printmatrix(adjMatr);
 		System.out.println(clusterCounter(adjMatr));
+		return adjMatr;
 
 	}
 
@@ -229,7 +232,7 @@ public class MarchovClusteringAlgorithm {
 		 counter);
 		 }
 		System.out.println(counter);
-		printmatrix(adjMatr);
+//		printmatrix(adjMatr);
 		return adjMatr;
 
 	}
@@ -240,6 +243,8 @@ public class MarchovClusteringAlgorithm {
 		// "/home/jagvir/Desktop/Datamining/Data_For_HW3/yeast_undirected_metabolic.txt");
 		File fileName = new File(
 				"/home/jagvir/DataMining_Marchov_clustering_algorithm/dataFiles/new_att.txt");
+//		File fileName = new File(
+//				"/home/jagvir/DataMining_Marchov_clustering_algorithm/dataFiles/new_collaboration.txt");
 		// File fileName = new File(
 		// "/home/jagvir/Desktop/Datamining/Data_For_HW3/temp.txt");
 		// Scanner input = new Scanner(System.in);
@@ -249,7 +254,7 @@ public class MarchovClusteringAlgorithm {
 		// int inflationParameter = input.nextInt();
 		// input.close();
 		MarchovClusteringAlgorithm obj = new MarchovClusteringAlgorithm();
-		obj.driverMethod(fileName, 2, 2);
+		obj.driverMethod(fileName, 3, 2);
 		float stopTime = System.currentTimeMillis();
 		System.out.println();
 		System.out.println("Time taken :- " + (stopTime - startTime));
