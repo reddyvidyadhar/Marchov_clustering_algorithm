@@ -10,17 +10,40 @@ public class MarchovClusteringAlgorithm {
 	 */
 	private int power = 1;
 
-	private void printmatrix(double[][] adjMatrix) {
-		int arrayDim = adjMatrix.length;
+	private void printmatrix(Matrix adjMatr) {
+		int counter = 0;
+		int arrayDim = adjMatr.getColumnDimension();
 		for (int i = 0; i < arrayDim; i++) {
 			for (int j = 0; j < arrayDim; j++) {
-				// if (adjMatrix[i][j] > 0
-				// // && adjMatrix[i][j] < 1
+				// if (adjMatr.get(i, j) != 0
+				// // // && adjMatrix[i][j] < 1
 				// )
-				System.out.print(adjMatrix[i][j] + "\t");
+				{
+					counter++;
+					System.out.print(adjMatr.get(i, j) + "\t");
+				}
+
 			}
 			System.out.println();
 		}
+		// System.out.println(counter);
+	}
+
+	private int clusterCounter(Matrix adjMatr) {
+		int clusterCounter = 0;
+		int arrayDim = adjMatr.getColumnDimension();
+		for (int i = 0; i < arrayDim; i++) {
+			for (int j = 0; j < arrayDim; j++) {
+				if (adjMatr.get(i, j) > 0) {
+					clusterCounter++;
+					break;
+				}
+
+			}
+
+		}
+		System.out.println("cluster is :- " + clusterCounter);
+		return clusterCounter;
 	}
 
 	private int maxSizeFinder(File fileName) {
@@ -51,49 +74,77 @@ public class MarchovClusteringAlgorithm {
 		return maxElement;
 	}
 
-	private double[][] matrixNormalizer(double[][] adjMatrix) {
-		int arrayDim = adjMatrix.length;
+	private Matrix matrixNormalizer(Matrix adjMatr) {
+		int arrayDim = adjMatr.getColumnDimension();
 		// System.out.println(arrayDim);
 		for (int i = 0; i < arrayDim; i++) {
-			double sum = 0;
+			double sum = 0.0;
 			for (int j = 0; j < arrayDim; j++) {
-				sum = sum + adjMatrix[j][i];
-				// System.out.println("j , i "+j+" "+i);
+				sum = sum + adjMatr.get(j, i);
+				// System.out.print("j , i " + j + " " + i + "  value = "
+				// + adjMatr.get(j, i) + " ");
 			}
-			// System.out.println("sum = "+sum);
+			// System.out.println("  sum = " + sum);
 			for (int j = 0; j < arrayDim; j++) {
 				if (sum > 0)
-					adjMatrix[j][i] = adjMatrix[j][i] / sum;
+					adjMatr.set(j, i, (adjMatr.get(j, i) / sum));
+				// double round = (adjMatr.get(j, i) * 1000) / 1000;
+				double round = Math.round(adjMatr.get(j, i) * 10000.0) / 10000.0;
+				adjMatr.set(j, i, round);
+
 			}
 
 		}
-		 printmatrix(adjMatrix);
-		return adjMatrix;
+
+		return adjMatr;
 
 	}
 
-	private Matrix matrixMultiplicator(double[][] adjMatrix, int power) {
-		Matrix  baseMatrix = new Matrix(adjMatrix);
-		Matrix result= null;
-		int k= 1;
-		while(k<power){
-			Matrix adj = new Matrix(adjMatrix);
+	private Matrix matrixMultiplicator(Matrix adjMatr, int power) {
+		// System.out.println("here");
+		Matrix baseMatrix = adjMatr;
+		Matrix result = null;
+		int k = 1;
+		while (k < power) {
+			Matrix adj = adjMatr;
 			result = baseMatrix.times(adj);
 			baseMatrix = result;
 			k++;
 		}
-		
+
 		return baseMatrix;
 	}
 
-	private void matrixInflator() {
+	private Matrix matrixInflator(Matrix adjMatr, int inflationParameter) {
+		int arrayDim = adjMatr.getColumnDimension();
+		// System.out.println(arrayDim);
+		for (int i = 0; i < arrayDim; i++) {
+			double sumOfProduct = 0.0;
+			for (int j = 0; j < arrayDim; j++) {
+				sumOfProduct = sumOfProduct
+						+ Math.pow(adjMatr.get(j, i), inflationParameter);
+
+			}
+			// System.out.println("  sum = " + sum);
+			for (int j = 0; j < arrayDim; j++) {
+				if (sumOfProduct > 0)
+
+					adjMatr.set(
+							j,
+							i,
+							(Math.pow((adjMatr.get(j, i)), inflationParameter) / sumOfProduct));
+			}
+
+		}
+		return adjMatr;
 	}
 
-	public void adjacencyMatrixCreator(File fileName) {
-		int arrayDim = maxSizeFinder(fileName) + 1;// here arrayDim is
+	private Matrix adjacencyMatrixCreator(File fileName) {// Matrix is created
+															// and the mirroring
+															// is performed as
+															// well
+		int arrayDim = maxSizeFinder(fileName) + 1;
 
-		// incremented because the
-		// System.out.println(arrayDim);
 		System.out.println("Max element is :- " + arrayDim);
 		String line = null;
 		double[][] adjMatrix = new double[arrayDim][arrayDim];
@@ -112,6 +163,9 @@ public class MarchovClusteringAlgorithm {
 
 				adjMatrix[Integer.parseInt(strArry[0])][Integer
 						.parseInt(strArry[1])] = 1;
+				adjMatrix[Integer.parseInt(strArry[1])][Integer
+						.parseInt(strArry[0])] = 1;
+				// System.out.println(adjMatrix[Integer.parseInt(strArry[0])][Integer.parseInt(strArry[1])]);
 			}
 
 			bufferedReader.close();
@@ -120,26 +174,82 @@ public class MarchovClusteringAlgorithm {
 		} catch (IOException ex) {
 			System.out.println("Error reading file '" + fileName + "'");
 		}
-		// printmatrix(adjMatrix);
-		adjMatrix = matrixNormalizer(adjMatrix);
-//		printmatrix(adjMatrix);
+		Matrix adjMatr = new Matrix(adjMatrix);
+		adjMatr = identityMatrixAdder(adjMatr);
+		return adjMatr;
+
+	}
+
+	private Matrix identityMatrixAdder(Matrix adjMatr) {
+		int arrayDim = adjMatr.getColumnDimension();
+		for (int i = 0; i < arrayDim; i++) {
+			adjMatr.set(i, i, 1);
+		}
+		return adjMatr;
+	}
+
+	private boolean isMatrixEqual(Matrix initialMatrix, Matrix adjMatr) {
+		int arrayDim = initialMatrix.getColumnDimension();
+		for (int i = 0; i < arrayDim; i++) {
+			for (int j = 0; j < arrayDim; j++) {
+
+				if (initialMatrix.get(i, j) != adjMatr.get(i, j)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public void driverMethod(File fileName, int power, int inflationParameter) {
+
+		Matrix adjMatr = adjacencyMatrixCreator(fileName);
+		// printmatrix(adjMatr);
+		adjMatr = matrixNormalizer(adjMatr);
+		// System.out.println("convergence finder:- ");
+		// adjMatr = converganceFinder(adjMatr, power, inflationParameter);
+		// printmatrix(adjMatr);
+		// System.out.println(clusterCounter(adjMatr));
+
+	}
+
+	private Matrix converganceFinder(Matrix initialMatrix, int power,
+			int inflationParameter) {
+		System.out.println("herrreeeeeeeeee");
+		Matrix adjMatr = matrixMultiplicator(initialMatrix, power);
+		// System.out.println("after multiplication ");
+		// printmatrix(adjMatr);
+		adjMatr = matrixInflator(adjMatr, inflationParameter);
+		// System.out.println("after inflation");
+		// printmatrix(adjMatr);
+		adjMatr = matrixNormalizer(adjMatr);
+		// System.out.println("after normalization");
+		if (!isMatrixEqual(initialMatrix, adjMatr)) {
+
+			converganceFinder(adjMatr, power, inflationParameter);
+		}
+		return adjMatr;
 
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		// The name of the file to open.
 		float startTime = System.currentTimeMillis();
 		// File fileName = new File(
 		// "/home/jagvir/Desktop/Datamining/Data_For_HW3/yeast_undirected_metabolic.txt");
 		// File fileName = new File(
-		// "/home/jagvir/Desktop/Datamining/Data_For_HW3/attweb_net.txt");
+		// "/home/jagvir/DataMining_Marchov_clustering_algorithm/dataFiles/new_att.txt");
 		File fileName = new File(
 				"/home/jagvir/Desktop/Datamining/Data_For_HW3/temp.txt");
-
+		// Scanner input = new Scanner(System.in);
+		// System.out.println("enter power");
+		// int power = input.nextInt();
+		// System.out.println("enter inflation");
+		// int inflationParameter = input.nextInt();
+		// input.close();
 		MarchovClusteringAlgorithm obj = new MarchovClusteringAlgorithm();
-		obj.adjacencyMatrixCreator(fileName);
+		obj.driverMethod(fileName, 2, 2);
 		float stopTime = System.currentTimeMillis();
+		System.out.println();
 		System.out.println("Time taken :- " + (stopTime - startTime));
 
 	}
