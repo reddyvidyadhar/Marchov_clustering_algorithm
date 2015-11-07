@@ -32,7 +32,7 @@ public class MarchovClusteringAlgorithm {
 		// System.out.println("counter:- " + counter);
 	}
 
-	private int clusterCounter(Matrix adjMatr) {
+	public int clusterCounter(Matrix adjMatr) {
 		int clusterCounter = 0;
 		int arrayDim = adjMatr.getColumnDimension();
 		for (int i = 0; i < arrayDim; i++) {
@@ -255,7 +255,7 @@ public class MarchovClusteringAlgorithm {
 		// int inflationParameter = input.nextInt();
 		// input.close();
 		MarchovClusteringAlgorithm obj = new MarchovClusteringAlgorithm();
-		obj.driverMethod(fileName, 3, 2);
+		obj.driverMethod(fileName, 2, 2);
 		float stopTime = System.currentTimeMillis();
 		System.out.println();
 		System.out.println("Time taken :- " + (stopTime - startTime));

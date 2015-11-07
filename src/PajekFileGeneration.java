@@ -1,13 +1,31 @@
-import java.io.File;
-import java.io.IOException;
-
+import java.io.*;
 import Jama.Matrix;
 import java.util.*;
+import java.util.Map.Entry;
 
 public class PajekFileGeneration {
+	public static int clusterCount = 0;
 	public static int arrayDim = 0;
 	MarchovClusteringAlgorithm MCLObj = new MarchovClusteringAlgorithm();
 	HashMap<HashSet, Integer> mpOfClusters = new HashMap<HashSet, Integer>();
+
+	private void intraSumCalculator(
+			HashMap<ArrayList<Integer>, Integer> mapOfClusters, Matrix adjMatr) {
+		int intraSum = 0;
+		for (Map.Entry<ArrayList<Integer>, Integer> entrySet : mapOfClusters
+				.entrySet()) {
+			for (int i = 0; i < entrySet.getKey().size(); i++) {
+				for (int j = i + 1; j < entrySet.getKey().size(); j++) {
+						if(adjMatr.get(i, j)==1){
+							intraSum++;
+						}
+				}
+			}
+
+		}
+		System.out.println("intra Sum = "+intraSum);
+
+	}
 
 	private HashMap pajekGenerator(
 			HashMap<ArrayList<Integer>, Integer> mapOfClusters) {
@@ -34,11 +52,35 @@ public class PajekFileGeneration {
 
 	private void mapToFileWriter(
 			HashMap<Integer, ArrayList<Integer>> nodeToClusterMap) {
-		File file = new File("PajekResultFile");
+		File file = new File(
+				"/home/jagvir/DataMining_Marchov_clustering_algorithm/dataFiles/PajekResultFile.txt");
+
 		try {
 			if (!file.exists()) {
 				file.createNewFile();
 			}
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write("*Partition PartitionName\n");
+			bw.write("*Vertices ");
+			Integer vertices = arrayDim - 1;
+			String str = vertices.toString();
+			bw.write(str + "\n");
+
+			for (Map.Entry<Integer, ArrayList<Integer>> entry : nodeToClusterMap
+					.entrySet()) {
+				// System.out.println(" Value : " + entry.getValue());
+
+				String data = (entry.getValue().get(0).toString());
+				bw.write(data + "\n");
+				// if (entry.getValue() != null) {
+				// int data = entry.getValue().get(0);
+				// // System.out.println(data);
+				// bw.write(data);
+				// }
+			}
+
+			bw.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -73,8 +115,10 @@ public class PajekFileGeneration {
 	public void driverMethod(File fileName, int power, int inflationParameter) {
 		Matrix adjMatr = MCLObj.driverMethod(fileName, power,
 				inflationParameter);
+		clusterCount = MCLObj.clusterCounter(adjMatr);
 		;
 		mapToFileWriter(pajekGenerator(clusterMaker(adjMatr)));
+		intraSumCalculator(clusterMaker(adjMatr), adjMatr);
 
 	}
 
