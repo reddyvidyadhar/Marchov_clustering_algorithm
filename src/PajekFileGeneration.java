@@ -8,7 +8,7 @@ public class PajekFileGeneration {
 	public static int arrayDim = 0;
 	public static int power = 0;
 	public static double inflationFactor = 0;
-	public static int choice=0;
+	public static int choice = 0;
 
 	MarchovClusteringAlgorithm MCLObj = new MarchovClusteringAlgorithm();
 	public static Matrix initialMatrix = null;
@@ -100,7 +100,7 @@ public class PajekFileGeneration {
 			HashMap<Integer, ArrayList<Integer>> nodeToClusterMap) {
 		File file = new File(
 				"/home/jagvir/DataMining_Marchov_clustering_algorithm/dataFiles/PajekResultFile_"
-						+ power + "_" + inflationFactor +"_"+choice +".txt");
+						+ power + "_" + inflationFactor + "_" + choice + ".txt");
 
 		try {
 			if (!file.exists()) {
